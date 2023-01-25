@@ -7,6 +7,8 @@ app.secret_key = "bf7e92050d9a17827708a6013101d857fc2cf38950421df956b53bf3c9baf1
 import os
 import psycopg2
 
+seed = 0
+
 def insert_seed(seed):
     try:
         conn = psycopg2.connect(
@@ -53,10 +55,11 @@ def read_seed():
 
 @app.route("/", methods=["POST"])
 def updatenum():
+    global seed
     print ("before loading the request")
     record = json.loads(request.data)
     seed = record["num"]
-    insert_seed(seed)
+    #insert_seed(seed)
     #session["num"] = record["num"]
     num = seed
     print ("post is called")
@@ -66,8 +69,9 @@ def updatenum():
 @app.route("/", methods=["GET"])
 def getnum():
     print ("get is called")
+    global seed
 
-    seed = read_seed()
+    #seed = read_seed()
     print ("seed is " + str(seed))
     return str(seed)
 
